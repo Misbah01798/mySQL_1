@@ -3,18 +3,30 @@ const router = express.Router();
 const { News } = require('../models');
 
 // Get all news
-router.get("/news", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await News.findAll();
+    console.log(result); // Log the result to ensure it's returning data correctly
     res.json(result);
   } catch (error) {
-    console.error("Error fetching news:", error);
+    console.error("Error fetching news:", error); // Log the detailed error
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/", async (req, res) => {
+  try {
+    const newsData = req.body;
+    const newNews = await News.create(newsData);
+    res.json({ acknowledged: true, news: newNews });
+  } catch (error) {
+    console.error("Error creating news:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
 // Delete a specific news item by ID
-router.delete("/news/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -24,13 +36,14 @@ router.delete("/news/:id", async (req, res) => {
     }
     res.json({ message: "News deleted successfully" });
   } catch (error) {
-    console.error("Error deleting news:", error);
+    console.error("Error deleting news:", error); // Log the detailed error
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
+
 // Update a specific news item by ID
-router.put("/news/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   const newsData = req.body;
   const id = req.params.id;
 
@@ -40,11 +53,13 @@ router.put("/news/:id", async (req, res) => {
       return res.status(404).json({ message: "News not found" });
     }
     const updatedNews = await News.findOne({ where: { id } });
+    console.log(updatedNews); // Log the updated news data
     res.json(updatedNews);
   } catch (error) {
-    console.error("Error updating news:", error);
+    console.error("Error updating news:", error); // Log the detailed error
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 module.exports = router;

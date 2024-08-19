@@ -1,6 +1,3 @@
-const { FOREIGNKEYS } = require("sequelize/lib/query-types");
-
-// models/Cart.js
 module.exports = (sequelize, DataTypes) => {
   const Cart = sequelize.define("Cart", {
     id: {
@@ -12,16 +9,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    product_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      foreignKey: true,
-    },
+    
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-        products_img: {
+    products_img: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -39,6 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     // Add any other fields you need for your cart items
   });
+
+  
 
   return Cart;
 };

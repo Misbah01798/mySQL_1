@@ -3,7 +3,7 @@ const router = express.Router();
 const { Products } = require('../models');
 
 // Get all products
-router.get("/products", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await Products.findAll();
     res.json(result);
@@ -12,6 +12,7 @@ router.get("/products", async (req, res) => {
     res.status(500).json({ error: "Error fetching products" });
   }
 });
+
 
 // Search for products by name
 router.get("/search", async (req, res) => {
@@ -35,7 +36,7 @@ router.get("/search", async (req, res) => {
 });
 
 // Get products by category
-router.get("/products/:category", async (req, res) => {
+router.get("/:category", async (req, res) => {
   const category = req.params.category;
   try {
     const result = await Products.findAll({ where: { category } });
@@ -47,7 +48,7 @@ router.get("/products/:category", async (req, res) => {
 });
 
 // Create a new product
-router.post("/products", async (req, res) => {
+router.post("/", async (req, res) => {
   const productData = req.body;
   try {
     const result = await Products.create(productData);

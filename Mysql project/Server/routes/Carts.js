@@ -4,7 +4,7 @@ const { Cart } = require('../models');
 const { Op } = require('sequelize');
 
 // Get all cart items for a specific user by email
-router.get("/carts", async (req, res) => {
+router.get("/", async (req, res) => {
   const email = req.query.email;
   if (!email) {
     return res.send([]);
@@ -19,19 +19,20 @@ router.get("/carts", async (req, res) => {
 });
 
 // Add a new item to the cart
-router.post("/carts", async (req, res) => {
+router.post("/", async (req, res) => {
   const item = req.body;
+  console.log("Received item:", item); // Log the item received
   try {
     const result = await Cart.create(item);
     res.status(201).json(result);
   } catch (error) {
-    console.error("Error adding item to cart:", error);
+    console.error("Error adding item to cart:", error); // Log the full error
     res.status(500).json({ error: "Error adding item to cart" });
   }
 });
 
 // Delete an item from the cart by ID
-router.delete("/carts/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const result = await Cart.destroy({ where: { id } });
@@ -58,7 +59,7 @@ router.delete("/clear-cart", async (req, res) => {
 });
 
 // Get a specific cart item by ID
-router.get("/carts/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const result = await Cart.findOne({ where: { id } });

@@ -6,10 +6,13 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
     },
+  },
     comName: {
       type: DataTypes.STRING,
       allowNull: false,

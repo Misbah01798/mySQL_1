@@ -3,7 +3,7 @@ const router = express.Router();
 const { Invoice } = require('../models');
 
 // Create a new invoice
-router.post("/invoices", async (req, res) => {
+router.post("/", async (req, res) => {
   const { email, invoiceData, cart } = req.body;
 
   try {
@@ -16,7 +16,7 @@ router.post("/invoices", async (req, res) => {
 });
 
 // Get a specific invoice by ID
-router.get("/invoices/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -32,7 +32,7 @@ router.get("/invoices/:id", async (req, res) => {
 });
 
 // Get invoice by email
-router.get("/invoice/:email", async (req, res) => {
+router.get("/:email", async (req, res) => {
   const email = req.params.email;
 
   if (!email) {
@@ -52,7 +52,7 @@ router.get("/invoice/:email", async (req, res) => {
 });
 
 // Get all invoices
-router.get("/invoice", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await Invoice.findAll();
     res.json(result);

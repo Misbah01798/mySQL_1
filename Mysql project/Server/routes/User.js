@@ -4,7 +4,7 @@ const { User } = require('../models');
 const { Op } = require('sequelize');
 
 // Create a new user
-router.post("/users", async (req, res) => {
+router.post("/", async (req, res) => {
   const newUser = req.body;
 
   try {
@@ -23,7 +23,7 @@ router.post("/users", async (req, res) => {
 });
 
 // Get user by email
-router.get("/user/:email", async (req, res) => {
+router.get("/:email", async (req, res) => {
   const email = req.params.email;
 
   try {
@@ -39,7 +39,7 @@ router.get("/user/:email", async (req, res) => {
 });
 
 // Get all users
-router.get("/users", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await User.findAll();
     res.json(result);
@@ -50,7 +50,7 @@ router.get("/users", async (req, res) => {
 });
 
 // Update user by email
-router.put("/users/update/:email", async (req, res) => {
+router.put("/update/:email", async (req, res) => {
   const email = req.params.email;
   const user = req.body;
 
@@ -72,7 +72,7 @@ router.put("/users/update/:email", async (req, res) => {
 });
 
 // Check if a user is an admin by email
-router.get("/users/admin/:email", async (req, res) => {
+router.get("/admin/:email", async (req, res) => {
   const email = req.params.email;
 
   try {
@@ -89,7 +89,7 @@ router.get("/users/admin/:email", async (req, res) => {
 });
 
 // Promote a user to admin by ID
-router.patch("/users/admin/:id", async (req, res) => {
+router.patch("/admin/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -110,7 +110,7 @@ router.patch("/users/admin/:id", async (req, res) => {
 });
 
 // Delete a user by ID
-router.delete("/users/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const id = req.params.id;
 
   try {

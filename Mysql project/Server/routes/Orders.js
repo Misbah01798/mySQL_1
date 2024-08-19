@@ -1,0 +1,60 @@
+// routes/orders.js
+const express = require('express');
+const router = express.Router();
+const Order = require('../models');
+
+// Create a new order
+router.post('/', async (req, res) => {
+  const { cart, email, name, date, address, status } = req.body;
+
+  try {
+    // Validate cart data
+    if (!Array.isArray(cart)) {
+      throw new Error("Cart data must be an array");
+    }
+
+    // Create the order in the database
+    const order = await Order.create({
+      cart,
+      email,
+      name,
+      date,
+      address,
+      status,
+    });
+
+    console.log("Inserted order ID:", order.id);
+    res.json({ acknowledged: true, insertedId: order.id });
+  } catch (error) {
+    console.error("Error saving data:", error);
+    res.status(500).json({ error: "Error saving data" });
+  }
+});
+
+// Get all orders
+router.get('/', async (req, res) => {
+  try {
+    const orders = await Order.findAll();
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get a specific order by ID
+router.get('/:id', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const order = await Order.findByPk(id);
+    if (order) {
+      res.json(order);
+    } else {
+      res.status(404).json({ error: 'Order not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+module.exports = router;
