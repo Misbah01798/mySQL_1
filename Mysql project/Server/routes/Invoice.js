@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
 });
 
 // Get a specific invoice by ID
-router.get("/:id", async (req, res) => {
+router.get("/id/:id", async (req, res) => {  // Updated path to avoid conflict with email route
   const id = req.params.id;
 
   try {
@@ -32,12 +32,8 @@ router.get("/:id", async (req, res) => {
 });
 
 // Get invoice by email
-router.get("/:email", async (req, res) => {
+router.get("/email/:email", async (req, res) => {  // Updated path to avoid conflict with ID route
   const email = req.params.email;
-
-  if (!email) {
-    return res.status(400).json({ error: "Email parameter is missing or invalid" });
-  }
 
   try {
     const result = await Invoice.findOne({ where: { email } });
@@ -46,7 +42,7 @@ router.get("/:email", async (req, res) => {
     }
     res.json(result);
   } catch (error) {
-    console.error("Error fetching invoice data:", error);
+    console.error("Error fetching invoice by email:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

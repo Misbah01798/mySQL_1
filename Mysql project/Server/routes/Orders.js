@@ -1,7 +1,6 @@
-// routes/orders.js
 const express = require('express');
 const router = express.Router();
-const Order = require('../models');
+const { Order } = require('../models'); // Ensure you're importing the Order model correctly
 
 // Create a new order
 router.post('/', async (req, res) => {
@@ -34,7 +33,7 @@ router.post('/', async (req, res) => {
 // Get all orders
 router.get('/', async (req, res) => {
   try {
-    const orders = await Order.findAll();
+    const orders = await Order.findAll(); // Order.findAll should work if Order is a valid Sequelize model
     res.json(orders);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -46,7 +45,7 @@ router.get('/:id', async (req, res) => {
   const id = req.params.id;
 
   try {
-    const order = await Order.findByPk(id);
+    const order = await Order.findByPk(id); // Using findByPk to find by primary key
     if (order) {
       res.json(order);
     } else {

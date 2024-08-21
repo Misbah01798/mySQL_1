@@ -3,7 +3,7 @@ const router = express.Router();
 const { OrderRequest } = require('../models');
 
 // Place a new order request
-router.post("/order-request", async (req, res) => {
+router.post("/", async (req, res) => {
   const { cart, userEmail } = req.body;
   
   try {
@@ -16,7 +16,7 @@ router.post("/order-request", async (req, res) => {
 });
 
 // Get all order requests
-router.get("/order-request", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await OrderRequest.findAll();
     res.json(result);
@@ -27,7 +27,7 @@ router.get("/order-request", async (req, res) => {
 });
 
 // Get a specific order request by ID
-router.get("/order-request/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const id = req.params.id;
 
   try {

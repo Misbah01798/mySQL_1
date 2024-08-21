@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
+       defaultValue: 1,
     },
     products_img: {
       type: DataTypes.STRING,
@@ -22,13 +23,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    category: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+    
     unit: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    number: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
     // Add any other fields you need for your cart items
   });

@@ -20,16 +20,15 @@ router.get("/", async (req, res) => {
 
 // Add a new item to the cart
 router.post("/", async (req, res) => {
-  const item = req.body;
-  console.log("Received item:", item); // Log the item received
   try {
-    const result = await Cart.create(item);
+    const result = await Cart.create(req.body);
     res.status(201).json(result);
   } catch (error) {
-    console.error("Error adding item to cart:", error); // Log the full error
+    console.error("Error adding item to cart:", error);
     res.status(500).json({ error: "Error adding item to cart" });
   }
 });
+
 
 // Delete an item from the cart by ID
 router.delete("/:id", async (req, res) => {
