@@ -55,5 +55,18 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+router.get("/email/:email", async (req, res) => {  // Updated path to avoid conflict with ID route
+  const email = req.params.email;
 
+  try {
+    const result = await Order.findOne({ where: { email } });
+    if (!result) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+    res.json(result);
+  } catch (error) {
+    console.error("Error fetching order by email:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 module.exports = router;

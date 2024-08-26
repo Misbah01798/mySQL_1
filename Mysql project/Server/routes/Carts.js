@@ -44,17 +44,30 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ error: "Error deleting cart item" });
   }
 });
-
 // Clear all items from a user's cart
-router.delete("/clear-cart", async (req, res) => {
+router.delete("/", async (req, res) => {
   const { userEmail } = req.body;
+  console.log('Received request to clear cart for email:', userEmail);
   try {
-    await Cart.destroy({ where: { email: userEmail } });
-    res.status(200).send("Cart cleared successfully");
+    const deletedItems = await Cart.destroy({ where: { email: userEmail } });
+    if (deletedItems > 0) {
+      console.log('Deleted items count:', deletedItems);
+      res.status(200).json({ message: "Cart cleared successfully" });
+    } else {
+      res.status(404).json({ message: "No items found in cart" });
+    }
   } catch (error) {
-    console.error("Error clearing cart:", error);
-    res.status(500).send("Internal server error");
+  if (error instanceof Sequelize.ValidationError) {
+    console.error("Validation error:", error);
+    return res.status(400).json({ message: "Validation error", details: error.errors });
+  } else if (error instanceof Sequelize.DatabaseError) {
+    console.error("Database error:", error);
+    return res.status(500).json({ message: "Database error" });
+  } else {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
+}
 });
 
 // Get a specific cart item by ID

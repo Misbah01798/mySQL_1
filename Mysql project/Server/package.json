@@ -10,10 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-session": "^2.1.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "mysql2": "^3.11.0",
     "nodemon": "^3.1.4",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2"
   }

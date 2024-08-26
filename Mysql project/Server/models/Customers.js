@@ -2,7 +2,12 @@
 // models/OrderRequest.js
 module.exports = (sequelize, DataTypes) => {
   const Customer = sequelize.define('Customer', {
-  com_name: {
+  id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    com_name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -14,12 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       isEmail: true,
     },
   },
-  phone: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  address: {
-    type: DataTypes.STRING,
+  number: {
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   img: {

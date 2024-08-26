@@ -60,7 +60,7 @@ router.post("/", async (req, res) => {
 });
 
 // Update a product by ID
-router.put("/products/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   const productId = req.params.id;
   const productData = req.body;
   
@@ -81,7 +81,7 @@ router.put("/products/:id", async (req, res) => {
 });
 
 // Delete a product by ID
-router.delete("/products/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const productId = req.params.id;
 
   try {

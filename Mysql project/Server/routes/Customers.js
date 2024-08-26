@@ -6,12 +6,15 @@ const { Customer } = require('../models'); // Import the Customer model
 // Create a new customer
 router.post('/', async (req, res) => {
   try {
+    console.log(req.body); // Log the incoming request body
     const customer = await Customer.create(req.body);
     res.status(201).json(customer);
   } catch (error) {
+    console.error(error.message);
     res.status(400).json({ error: error.message });
   }
 });
+
 
 // Get all customers
 router.get('/', async (req, res) => {
