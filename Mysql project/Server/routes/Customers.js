@@ -1,59 +1,67 @@
-// routes/customers.js
 const express = require('express');
 const router = express.Router();
-const { Customer } = require('../models'); // Import the Customer model
-
-// Create a new customer
-router.post('/', async (req, res) => {
-  try {
-    console.log(req.body); // Log the incoming request body
-    const customer = await Customer.create(req.body);
-    res.status(201).json(customer);
-  } catch (error) {
-    console.error(error.message);
-    res.status(400).json({ error: error.message });
-  }
-});
-
+const { Customer } = require('../models');
 
 // Get all customers
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const customers = await Customer.findAll();
+    console.log(customers); // Log the result to ensure it's returning data correctly
     res.json(customers);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error fetching customers:", error); // Log the detailed error
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// Delete a customer by ID
-router.delete('/:id', async (req, res) => {
+// Create a new customer
+router.post("/", async (req, res) => {
   try {
-    const id = req.params.id;
+    const customerData = req.body;
+    console.log('Received data:', customerData); // Logs the received data
+    const newCustomer = await Customer.create(customerData);
+    res.status(201).json({ acknowledged: true, customer: newCustomer });
+  } catch (error) {
+    console.error("Error creating customer:", error); // Log the detailed error
+    res.status(400).json({
+      error: error.message,
+      details: error.errors ? error.errors.map(err => err.message) : [],
+    });
+  }
+});
+
+// Delete a specific customer by ID
+router.delete("/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
     const result = await Customer.destroy({ where: { id } });
-    if (result) {
-      res.status(204).send();
-    } else {
-      res.status(404).json({ error: 'Customer not found' });
+    if (result === 0) {
+      return res.status(404).json({ message: "Customer not found" });
     }
+    res.json({ message: "Customer deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error deleting customer:", error); // Log the detailed error
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// Update a customer by ID
-router.put('/:id', async (req, res) => {
+// Update a specific customer by ID
+router.put("/:id", async (req, res) => {
+  const customerData = req.body;
+  const id = req.params.id;
+
   try {
-    const id = req.params.id;
-    const [updated] = await Customer.update(req.body, { where: { id } });
-    if (updated) {
-      const updatedCustomer = await Customer.findOne({ where: { id } });
-      res.json(updatedCustomer);
-    } else {
-      res.status(404).json({ error: 'Customer not found' });
+    const [updated] = await Customer.update(customerData, { where: { id }, returning: true });
+    if (!updated) {
+      return res.status(404).json({ message: "Customer not found" });
     }
+    const updatedCustomer = await Customer.findOne({ where: { id } });
+    console.log(updatedCustomer); // Log the updated customer data
+    res.json(updatedCustomer);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error updating customer:", error); // Log the detailed error
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
